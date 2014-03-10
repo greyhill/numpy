@@ -336,9 +336,12 @@ class matrix(N.ndarray):
         return out
 
     def __mul__(self, other):
-        # extract scalars from singleton matrices
         if len(self) == 1:
+            # extract scalars from singleton matrices (self)
             return N.dot(self.flat[0], other)
+        if isinstance(other, N.ndarray) and other.shape == (1,1):
+            # extract scalars from singleton matrices (other)
+            return N.dot(self, other.flat[0])
         if isinstance(other, (N.ndarray, list, tuple)) :
             # This promotes 1-D vectors to row vectors
             return N.dot(self, asmatrix(other))
