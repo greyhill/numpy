@@ -336,7 +336,7 @@ class matrix(N.ndarray):
         return out
 
     def __mul__(self, other):
-        if len(self) == 1:
+        if self.shape == (1,1):
             # extract scalars from singleton matrices (self)
             return N.dot(self.flat[0], other)
         if isinstance(other, N.ndarray) and other.shape == (1,1):
@@ -351,7 +351,7 @@ class matrix(N.ndarray):
 
     def __rmul__(self, other):
         # extract scalars from singleton matrices
-        if len(self) == 1:
+        if self.shape == (1,1):
             return N.dot(other, self.flat[0])
         else:
             return N.dot(other, self)
