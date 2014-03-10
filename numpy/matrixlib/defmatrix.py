@@ -336,6 +336,9 @@ class matrix(N.ndarray):
         return out
 
     def __mul__(self, other):
+        # extract scalars from singleton matrices
+        if len(self) == 1:
+            return N.dot(self.flat[0], other)
         if isinstance(other, (N.ndarray, list, tuple)) :
             # This promotes 1-D vectors to row vectors
             return N.dot(self, asmatrix(other))
@@ -344,7 +347,11 @@ class matrix(N.ndarray):
         return NotImplemented
 
     def __rmul__(self, other):
-        return N.dot(other, self)
+        # extract scalars from singleton matrices
+        if len(self) == 1:
+            return N.dot(other, self.flat[0])
+        else:
+            return N.dot(other, self)
 
     def __imul__(self, other):
         self[:] = self * other
